@@ -13,14 +13,23 @@ public class KafkaProducer {
 	private static final Logger LOG = LoggerFactory.getLogger(KafkaProducer.class);
 	
 	@Autowired
-	private KafkaTemplate<String,String> kafkaTemplate;
-	
-	@Value("${app.kafka.topic}")
-	String mytopic = "mytopic";
-	
-	public void send(String data){
-		LOG.info("Sending data : {} ", data);
-		kafkaTemplate.send(mytopic, data);
+	private final KafkaTemplate<String,String> kafkaTemplate;
+
+	@Value("${spring.kafka.producer.topics.producers}")
+	String mytopic = "nrt_enr_rel_BGDTREF";
+
+	public KafkaProducer(KafkaTemplate<String, String> kafkaTemplate) {
+		this.kafkaTemplate = kafkaTemplate;
+	}
+
+	public void send(String keyId, String data){
+		LOG.info("Sending data : {} with key: {}", data, keyId);
+		kafkaTemplate.send(mytopic,keyId,data);
+	}
+
+	public void sendWithoutKey(String data){
+		LOG.info("Sending data : {}", data);
+		kafkaTemplate.send(mytopic,data);
 	}
 
 }

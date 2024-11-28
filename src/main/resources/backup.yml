@@ -1,0 +1,44 @@
+spring:
+  kafka:
+    ## admin:
+    ##  properties:
+    ##     sasl.kerberos.service.name: kafka
+    ##   security:
+    ## protocol: SASL_SSL
+    bootstrap-servers:
+      ec2-34-228-17-221.compute-1.amazonaws.com:9192
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      enable-auto-commit: false
+      auto-offset-reset: earliest
+      group-id: rtsp_consumidor1
+      client-id: rtsp_consumidor1
+      key: rtsp_consumidor1
+      topics:
+        consumers: TSOURCE
+    producer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      enable-auto-commit: false
+      auto-offset-reset: earliest
+      group-id: rtsp_consumidor1
+      client-id: rtsp_consumidor1
+      key: rtsp_consumidor2
+      topics:
+        producers: TSOURCE
+      properties:
+        max.partition.fetch.bytes: 2097152
+        sasl.kerberos.service.name: kafka
+        enable:
+          idempotence: false
+    listener:
+      concurrency: 6
+      type: BATCH
+      ack-mode: BATCH
+      poll-timeout: 1
+
+
+---
+server:
+  port: 8090

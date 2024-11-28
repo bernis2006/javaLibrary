@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consultar Consumer Lag</title>
+</head>
+<body>
+<h1>Consultar Consumer Lag</h1>
+<form id="consumerLagForm">
+  <label for="groupIds">Ingrese los Consumer Groups (separados por comas):</label><br>
+  <input type="text" id="groupIds" name="groupIds" placeholder="sanmx.seb.enriched.stream.aux.translator.test,group2,group3" required>
+  <br><br>
+  <button type="submit">Consultar Lag</button>
+</form>
+
+<h2>Resultado:</h2>
+<pre id="result"></pre>
+
+<!-- JavaScript embebido -->
+<script>
+        document.getElementById('consumerLagForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const groupIds = document.getElementById('groupIds').value;
+            const resultElement = document.getElementById('result');
+
+            try {
+                const response = await fetch('http://localhost:8090/trim/kafka/consumerMuiltipleLag', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({ groupIds })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error en la solicitud: ${response.statusText}`);
+                }
+
+                const data = await response.text();
+                resultElement.textContent = data;
+            } catch (error) {
+                resultElement.textContent = `Error: ${error.message}`;
+            }
+        });
+    </script>
+</body>
+</html>

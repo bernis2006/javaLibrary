@@ -1,0 +1,61 @@
+spring:
+  kafka:
+    admin:
+      properties:
+        sasl.kerberos.service.name: kafka
+    security:
+      protocol: SASL_SSL
+    bootstrap-servers:
+      - srcdldlo21mxr11.ilm.dev.mx.corp:9093
+      - srcdldlo22mxr12.ilm.dev.mx.corp:9093
+      - srcdldlo21mxr13.ilm.dev.mx.corp:9093
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      enable-auto-commit: false
+      auto-offset-reset: earliest
+      group-id: rtsp_consumidor2
+      client-id: rtsp_consumidor2
+      key: rtsp_consumidor1
+      topics:
+        consumers: nrt_enr_rel_BGDTREF
+    producer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      enable-auto-commit: false
+      auto-offset-reset: earliest
+      group-id: rtsp_consumidor2
+      client-id: rtsp_consumidor2
+      key: rtsp_consumidor2
+      topics:
+        producers: nrt_enr_rel_BGDTREF
+      properties:
+        max.partition.fetch.bytes: 2097152
+        sasl.kerberos.service.name: kafka
+        enable:
+          idempotence: false
+    listener:
+      concurrency: 6
+      type: BATCH
+      ack-mode: BATCH
+      poll-timeout: 1
+    ssl:
+      key-store-location: "file:///Users/Z424413/Documents/kafka/DEV/solr_oozie_kafka_dev.jks"
+      key-store-password: "S1santan"
+      key-password: "S1santan"
+      trust-store-location: "file:///Users/Z424413/Documents/kafka/DEV/nrt_s04__01_dev__jssecacerts"
+      trust-store-password: "changeit"
+    jaas:
+      control-flag: REQUIRED
+      enabled: true
+      login-module: com.sun.security.auth.module.Krb5LoginModule
+      options:
+        serviceName: kafka
+        principal: dehtrtsp@DESALTECMEXICO.MX.BSCH
+        useKeyTab: true
+        keyTab: src/main/resources/dehtrtsp.keytab
+        storeKey: true
+
+---
+server:
+  port: 8090
