@@ -14,7 +14,7 @@ public class KafkaAdminConfig {
     public AdminClient adminClient() {
         // Configuración de las propiedades de Kafka para el AdminClient
         Map<String, Object> config = new HashMap<>();
-        config.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092"); // Cambia la dirección según tu entorno
+        config.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "ec2-54-197-186-66.compute-1.amazonaws.com:9192"); // Cambia la dirección según tu entorno
         config.put(AdminClientConfig.CLIENT_ID_CONFIG, "admin-client");
 
         return AdminClient.create(config);
